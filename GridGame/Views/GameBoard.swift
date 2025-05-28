@@ -61,6 +61,7 @@ struct GameBoard: View {
 
             RoundedRectangle(cornerRadius: 2, style: .circular)
                 .fill(Color.yellow)
+                .pulsatingEffect()
                 .frame(width: width - (2.0 * spaceOutline), height: height - (2.0 * spaceOutline))
                 .offset(
                     x: xOffset + spaceOutline,

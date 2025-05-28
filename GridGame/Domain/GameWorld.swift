@@ -46,11 +46,15 @@ enum Terrain {
     }
 }
 
-struct GameWorld {
+class GameWorld {
     let terrain: [[Terrain]]
     
     var rows: Int { terrain.count }
     func colsIn(row: Int) -> Int { terrain[row].count }
+    
+    init(terrain: [[Terrain]]) {
+        self.terrain = terrain
+    }
 }
 
 extension GameWorld {

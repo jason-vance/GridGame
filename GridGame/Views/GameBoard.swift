@@ -11,12 +11,13 @@ struct GameBoard: View {
     
     let spaceOutline: CGFloat = 0.5
     
+    @State private var characters: [GameCharacter] = [.sample]
     @State private var gameWorld: GameWorld = .sample
-    @State private var selectedLocation: BoardLocation?
+    @State private var selectedLocation: GameWorldLocation?
     
-    private func onTap(boardLocation: BoardLocation) {
-        print("onTap: (\(boardLocation.row), \(boardLocation.col))")
-        selectedLocation = boardLocation
+    private func onTap(gameWorldLocation: GameWorldLocation) {
+        print("onTap: (\(gameWorldLocation.row), \(gameWorldLocation.col))")
+        selectedLocation = gameWorldLocation
     }
     
     var body: some View {
@@ -24,6 +25,7 @@ struct GameBoard: View {
             ZStack(alignment: .topLeading) {
                 BoardSpaces()
                 SelectedLocationHighlight(frame: geo.frame(in: .local))
+                GameCharacters(frame: geo.frame(in: .local))
                 BoardButtons()
             }
         }
@@ -70,6 +72,34 @@ struct GameBoard: View {
         }
     }
     
+    @ViewBuilder private func GameCharacters(frame: CGRect) -> some View {
+        ForEach(characters.indices, id: \.self) { characterIndex in
+            let character = characters[characterIndex]
+            
+            if let location = character.location {
+                let height = frame.height / CGFloat(gameWorld.rows)
+                let width = frame.width / CGFloat(gameWorld.colsIn(row: location.row))
+                
+                let xOffset = frame.minX + (CGFloat(location.col) * width)
+                let yOffset = frame.minY + (CGFloat(location.row) * height)
+
+                let margin = CGFloat(4.0)
+                Circle()
+                    .fill(character.type == .player ? Color.mint : Color.pink)
+                    .overlay {
+                        Circle()
+                            .stroke(lineWidth: 1)
+                            .foregroundStyle(Color.black)
+                    }
+                    .frame(width: width - (2 * margin), height: height - (2 * margin))
+                    .offset(
+                        x: xOffset + margin,
+                        y: yOffset + margin
+                    )
+            }
+        }
+    }
+    
     @ViewBuilder private func BoardButtons() -> some View {
         VStack(spacing: 0) {
             ForEach(0..<gameWorld.rows, id: \.self) { row in
@@ -84,7 +114,7 @@ struct GameBoard: View {
     
     @ViewBuilder private func BoardButton(row: Int, col: Int) -> some View {
         Button {
-            onTap(boardLocation: BoardLocation(row: row, col: col))
+            onTap(gameWorldLocation: GameWorldLocation(row: row, col: col))
         } label: {
             Rectangle()
                 .fill(Color.clear)

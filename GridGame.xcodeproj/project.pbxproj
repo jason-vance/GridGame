@@ -33,8 +33,9 @@
 		5600581B2DE5C29E00EA1813 /* Exceptions for "GridGame" folder in "GridGameTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Domain/BoardLocation.swift,
+				Domain/GameCharacter.swift,
 				Domain/GameWorld.swift,
+				Domain/GameWorldLocation.swift,
 			);
 			target = 560057ED2DE5B74C00EA1813 /* GridGameTests */;
 		};
